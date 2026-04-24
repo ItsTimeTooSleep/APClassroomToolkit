@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "AP Classroom Toolkit",
+  "version": "1.0",
+  "description": "Enhance AP Classroom with arrow key navigation and number key selection",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AP Classroom Toolkit"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://apclassroom.collegeboard.org/*"],
+      "js": [
+        "features/question-navigation/config.js",
+        "features/question-navigation/index.js",
+        "features/number-selection/config.js",
+        "features/number-selection/index.js",
+        "features/performance-navigation/config.js",
+        "features/performance-navigation/index.js",
+        "features/question-copy/config.js",
+        "features/question-copy/index.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}
