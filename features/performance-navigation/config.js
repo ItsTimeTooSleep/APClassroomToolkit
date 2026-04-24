@@ -1,0 +1,26 @@
+// Performance Navigation Configuration
+const PerformanceNavigationConfig = {
+  name: 'performanceNavigation',
+  title: 'Performance Navigation',
+  description: 'Optimized navigation with debouncing',
+  urlPatterns: ['/assessments/assignments/'],
+  defaultConfig: {
+    enabled: true,
+    debounceDelay: 100,
+    leftKey: 'ArrowLeft',
+    rightKey: 'ArrowRight'
+  },
+  uiConfig: {
+    showToggle: true,
+    fields: [
+      {
+        type: 'number',
+        id: 'debounceDelay',
+        label: 'Debounce Delay (ms)',
+        default: 100,
+        min: 50,
+        max: 500
+      }
+    ]
+  }
+};
