@@ -1,19 +1,28 @@
 {
   "manifest_version": 3,
-  "name": "AP Classroom Arrow Control",
+  "name": "AP Classroom Toolkit",
   "version": "1.0",
-  "description": "Use left/right arrow keys to navigate between questions in AP Classroom",
-  "permissions": [],
+  "description": "Enhance AP Classroom with arrow key navigation and number key selection",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "AP Classroom Toolkit"
+  },
   "content_scripts": [
     {
-      "matches": ["https://apclassroom.collegeboard.org/*/assessments/assignments/*"],
+      "matches": ["https://apclassroom.collegeboard.org/*"],
       "js": ["content.js"],
       "run_at": "document_idle"
     }
   ],
-  "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
-  }
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "features/features.json",
+        "features/*/manifest.json",
+        "features/*/index.js"
+      ],
+      "matches": ["https://apclassroom.collegeboard.org/*"]
+    }
+  ]
 }
