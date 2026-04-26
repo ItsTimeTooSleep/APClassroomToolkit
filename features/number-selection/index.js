@@ -2,15 +2,27 @@
 (function() {
   'use strict';
 
-  const settings = window['__APToolkit_number-selection_settings__'];
+  // Get settings from script tag data attribute (fix for isolated world)
+  const scriptEl = document.getElementById('__ap_toolkit_number-selection');
+  const settings = scriptEl ? JSON.parse(scriptEl.dataset.settings) : null;
   if (!settings || !settings.enabled) return;
 
   const NumberSelection = {
     config: settings,
+    boundKeydown: null,
 
     init: function() {
-      document.addEventListener('keydown', this.handleKeydown.bind(this), true);
+      this.boundKeydown = this.handleKeydown.bind(this);
+      document.addEventListener('keydown', this.boundKeydown, true);
       console.log('[AP Toolkit] Number Selection module loaded');
+    },
+
+    destroy: function() {
+      console.log('[AP Toolkit] Number Selection module destroyed');
+      if (this.boundKeydown) {
+        document.removeEventListener('keydown', this.boundKeydown, true);
+        this.boundKeydown = null;
+      }
     },
 
     handleKeydown: function(e) {

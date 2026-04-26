@@ -3,16 +3,28 @@
 (function() {
   'use strict';
 
-  const settings = window['__APToolkit_performance-navigation_settings__'];
+  // Get settings from script tag data attribute (fix for isolated world)
+  const scriptEl = document.getElementById('__ap_toolkit_performance-navigation');
+  const settings = scriptEl ? JSON.parse(scriptEl.dataset.settings) : null;
   if (!settings || !settings.enabled) return;
 
   const PerformanceNavigation = {
     config: settings,
     lastNavigationTime: 0,
+    boundKeydown: null,
 
     init: function() {
-      document.addEventListener('keydown', this.handleKeydown.bind(this), true);
+      this.boundKeydown = this.handleKeydown.bind(this);
+      document.addEventListener('keydown', this.boundKeydown, true);
       console.log('[AP Toolkit] Performance Navigation module loaded');
+    },
+
+    destroy: function() {
+      console.log('[AP Toolkit] Performance Navigation module destroyed');
+      if (this.boundKeydown) {
+        document.removeEventListener('keydown', this.boundKeydown, true);
+        this.boundKeydown = null;
+      }
     },
 
     handleKeydown: function(e) {

@@ -2,7 +2,9 @@
 (function() {
   'use strict';
 
-  const settings = window['__APToolkit_question-copy_settings__'];
+  // Get settings from script tag data attribute (fix for isolated world)
+  const scriptEl = document.getElementById('__ap_toolkit_question-copy');
+  const settings = scriptEl ? JSON.parse(scriptEl.dataset.settings) : null;
   if (!settings || !settings.enabled) return;
 
   const QuestionCopy = {
@@ -12,10 +14,15 @@
     dragOffset: { x: 0, y: 0 },
     position: { x: null, y: null },
     mouseStartPos: { x: 0, y: 0 },
+    boundMouseMove: null,
+    boundMouseUp: null,
+    boundResize: null,
+    isDestroyed: false,
 
     init: function() {
       this.loadPosition();
       this.waitForBody().then(() => {
+        if (this.isDestroyed) return;
         this.createIcon();
         this.setupDragListeners();
         console.log('[AP Toolkit] Question Copy icon created successfully');
@@ -106,7 +113,7 @@
         console.log('[AP Toolkit] mousedown at:', this.mouseStartPos);
       });
 
-      document.addEventListener('mousemove', (e) => {
+      this.boundMouseMove = (e) => {
         if (!this.isDragging) return;
         
         let newX = e.clientX - this.dragOffset.x;
@@ -119,9 +126,10 @@
         this.iconElement.style.top = `${newY}px`;
         this.position.x = newX;
         this.position.y = newY;
-      });
+      };
+      document.addEventListener('mousemove', this.boundMouseMove);
 
-      document.addEventListener('mouseup', (e) => {
+      this.boundMouseUp = (e) => {
         if (!this.isDragging) return;
         
         this.isDragging = false;
@@ -141,9 +149,10 @@
         } else {
           console.log('[AP Toolkit] Treating as drag, not triggering copy');
         }
-      });
+      };
+      document.addEventListener('mouseup', this.boundMouseUp);
 
-      window.addEventListener('resize', () => {
+      this.boundResize = () => {
         if (this.iconElement) {
           const rect = this.iconElement.getBoundingClientRect();
           if (rect.right > window.innerWidth) {
@@ -153,7 +162,44 @@
             this.iconElement.style.top = `${window.innerHeight - this.config.iconSize - 10}px`;
           }
         }
-      });
+      };
+      window.addEventListener('resize', this.boundResize);
+    },
+
+    destroy: function() {
+      console.log('[AP Toolkit] Question Copy module destroyed');
+      this.isDestroyed = true;
+      // Remove icon element
+      if (this.iconElement) {
+        this.iconElement.remove();
+        this.iconElement = null;
+      }
+      // Also remove by ID to be safe
+      const iconById = document.getElementById('ap-toolkit-copy-icon');
+      if (iconById) {
+        iconById.remove();
+      }
+      // Remove notification if exists
+      const notification = document.getElementById('ap-toolkit-notification');
+      if (notification) {
+        notification.remove();
+      }
+      // Remove event listeners
+      if (this.boundMouseMove) {
+        document.removeEventListener('mousemove', this.boundMouseMove);
+        this.boundMouseMove = null;
+      }
+      if (this.boundMouseUp) {
+        document.removeEventListener('mouseup', this.boundMouseUp);
+        this.boundMouseUp = null;
+      }
+      if (this.boundResize) {
+        window.removeEventListener('resize', this.boundResize);
+        this.boundResize = null;
+      }
+      // Remove notification styles if exists
+      const notificationStyles = document.getElementById('ap-toolkit-notification-styles');
+      if (notificationStyles) notificationStyles.remove();
     },
 
     handleCopy: function() {

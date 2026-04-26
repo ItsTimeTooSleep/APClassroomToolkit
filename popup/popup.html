@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Classroom Toolkit</title>
+  <link rel="stylesheet" href="popup.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="noise-overlay"></div>
+  <div class="gradient-blob blob-1"></div>
+  <div class="gradient-blob blob-2"></div>
+  
+  <div class="container">
+    <!-- 主菜单页面 -->
+    <div id="mainPage" class="page active">
+      <header class="header">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="white" fill-opacity="0.9"/>
+              <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="title-section">
+            <h1 class="main-title">AP Classroom Toolkit</h1>
+            <p class="subtitle">Enhance your learning experience</p>
+          </div>
+        </div>
+      </header>
+
+      <main class="content" id="featuresContainer">
+      </main>
+    </div>
+
+    <!-- 详细设置页面 -->
+    <div id="detailPage" class="page">
+      <header class="detail-header">
+        <button id="backBtn" class="back-btn">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Back</span>
+        </button>
+        <div id="detailTitle" class="detail-title"></div>
+      </header>
+
+      <main class="detail-content" id="detailContainer">
+      </main>
+    </div>
+  </div>
+
+  <!-- 浮动底部操作栏 -->
+  <div class="floating-footer" id="footerActions">
+    <button id="discardBtn" class="discard-btn">
+      <span class="btn-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 6H5H21" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="btn-text">Discard</span>
+    </button>
+    <button id="saveBtn" class="save-btn">
+      <span class="btn-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="btn-text">Save</span>
+    </button>
+    <div id="saveStatus" class="save-status">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>Saved!</span>
+    </div>
+  </div>
+
+  <script src="constants.js"></script>
+  <script src="navigation.js"></script>
+  <script src="settings.js"></script>
+  <script src="ui-elements.js"></script>
+  <script src="events.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

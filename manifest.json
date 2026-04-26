@@ -5,7 +5,7 @@
   "description": "Enhance AP Classroom with arrow key navigation and number key selection",
   "permissions": ["storage"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "default_title": "AP Classroom Toolkit"
   },
   "content_scripts": [
