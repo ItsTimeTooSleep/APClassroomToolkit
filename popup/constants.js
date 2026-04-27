@@ -1,9 +1,6 @@
 const TransformRegistry = {
   'number-selection': {
-    keys: {
-      save: (value) => value.split(',').map(k => k.trim()),
-      load: (value) => Array.isArray(value) ? value.join(', ') : value
-    }
+    // 不再需要keys的transform，因为现在使用独立的option字段
   }
 };
 

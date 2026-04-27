@@ -25,11 +25,23 @@
       }
     },
 
+    getKeyToOptionMap: function() {
+      const keyMap = {};
+      const optionKeys = ['optionA', 'optionB', 'optionC', 'optionD', 'optionE'];
+      optionKeys.forEach((key, index) => {
+        if (this.config[key]) {
+          keyMap[this.config[key]] = index;
+        }
+      });
+      return keyMap;
+    },
+
     handleKeydown: function(e) {
       if (e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
 
-      const keyIndex = this.config.keys.indexOf(e.key);
-      if (keyIndex === -1) return;
+      const keyMap = this.getKeyToOptionMap();
+      const keyIndex = keyMap[e.key];
+      if (keyIndex === undefined) return;
 
       const allOptions = document.querySelectorAll('li.lrn-mcq-option');
       const visibleOptions = Array.from(allOptions).filter(opt => {

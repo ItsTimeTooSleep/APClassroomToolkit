@@ -116,8 +116,17 @@ function handleUrlChange() {
     
     if (!shouldBeActive && isActive) {
       destroyModule(featureId);
-    } else if (shouldBeActive && !isActive) {
-      initializeModule(featureId, manifest, currentSettings[featureId]);
+    } else if (shouldBeActive) {
+      // 对 question-navigation 特殊处理：URL 变化时总是重新初始化
+      if (featureId === 'question-navigation') {
+        if (isActive) {
+          destroyModule(featureId);
+        }
+        initializeModule(featureId, manifest, currentSettings[featureId]);
+      } else if (!isActive) {
+        // 其他功能只在未激活时初始化
+        initializeModule(featureId, manifest, currentSettings[featureId]);
+      }
     }
   }
 }

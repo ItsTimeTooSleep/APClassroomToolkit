@@ -2,6 +2,52 @@ let currentPage = 'main';
 let currentFeatureId = null;
 let isDetailPageLoaded = false;
 
+function goToAboutPage() {
+  console.log('[Debug] goToAboutPage called');
+  currentPage = 'about';
+
+  const mainPage = document.getElementById('mainPage');
+  const aboutPage = document.getElementById('aboutPage');
+
+  mainPage.classList.remove('active');
+  mainPage.classList.add('slide-out');
+
+  setTimeout(() => {
+    console.log('[Debug] Transition complete, rendering about page');
+    mainPage.classList.remove('slide-out');
+    
+    renderAboutPage();
+    aboutPage.classList.add('active');
+    
+    hideFooter();
+    removeBottomPadding();
+  }, 150);
+}
+
+function goToMainPageFromAbout() {
+  console.log('[Debug] goToMainPageFromAbout called');
+  currentPage = 'main';
+
+  const mainPage = document.getElementById('mainPage');
+  const aboutPage = document.getElementById('aboutPage');
+
+  aboutPage.classList.remove('active');
+  aboutPage.classList.add('slide-out');
+
+  setTimeout(() => {
+    console.log('[Debug] Transition complete, rendering main page');
+    aboutPage.classList.remove('slide-out');
+    mainPage.classList.add('active');
+    renderMainPage();
+    
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        loadSettings();
+      });
+    });
+  }, 150);
+}
+
 function goToDetailPage(featureId) {
   console.log('[Debug] goToDetailPage called for feature:', featureId);
   currentPage = 'detail';

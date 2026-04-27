@@ -207,9 +207,76 @@ function renderDetailPage(featureId) {
   }
 }
 
+function renderAboutPage() {
+  const container = document.getElementById('aboutContainer');
+  container.innerHTML = '';
+
+  // 作者信息
+  const authorSection = document.createElement('section');
+  authorSection.className = 'about-section';
+  
+  const authorLabel = document.createElement('div');
+  authorLabel.className = 'about-label';
+  authorLabel.textContent = 'Author';
+  
+  const authorValue = document.createElement('div');
+  authorValue.className = 'about-value';
+  authorValue.textContent = 'ItsTimeTooSleep';
+  
+  authorSection.appendChild(authorLabel);
+  authorSection.appendChild(authorValue);
+  container.appendChild(authorSection);
+
+  // GitHub 链接
+  const githubSection = document.createElement('section');
+  githubSection.className = 'about-section';
+  
+  const githubLabel = document.createElement('div');
+  githubLabel.className = 'about-label';
+  githubLabel.textContent = 'GitHub';
+  
+  const githubValue = document.createElement('div');
+  githubValue.className = 'about-value';
+  
+  const githubLink = document.createElement('a');
+  githubLink.href = 'https://github.com/ItsTimeTooSleep/APClassroomToolkit';
+  githubLink.target = '_blank';
+  githubLink.rel = 'noopener noreferrer';
+  githubLink.className = 'about-link';
+  githubLink.innerHTML = `
+    <span>github.com/ItsTimeTooSleep/APClassroomToolkit</span>
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 13V19C18 19.5304 17.7893 20.0391 17.4142 20.4142C17.0391 20.7893 16.5304 21 16 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V8C3 7.46957 3.21071 6.96086 3.58579 6.58579C3.96086 6.21071 4.46957 6 5 6H11M15 3H21M21 3V9M21 3L10 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  `;
+  
+  githubValue.appendChild(githubLink);
+  githubSection.appendChild(githubLabel);
+  githubSection.appendChild(githubValue);
+  container.appendChild(githubSection);
+
+  // License 信息
+  const licenseSection = document.createElement('section');
+  licenseSection.className = 'about-section';
+  
+  const licenseLabel = document.createElement('div');
+  licenseLabel.className = 'about-label';
+  licenseLabel.textContent = 'License';
+  
+  const licenseValue = document.createElement('div');
+  licenseValue.className = 'about-license';
+  licenseValue.textContent = 'GPL-3.0 License';
+  
+  licenseSection.appendChild(licenseLabel);
+  licenseSection.appendChild(licenseValue);
+  container.appendChild(licenseSection);
+}
+
 function renderUI() {
   if (currentPage === 'main') {
     renderMainPage();
+  } else if (currentPage === 'about') {
+    renderAboutPage();
   } else {
     renderDetailPage(currentFeatureId);
   }

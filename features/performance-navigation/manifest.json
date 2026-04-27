@@ -1,10 +1,9 @@
 {
   "name": "Performance Navigation",
-  "description": "Optimized navigation with debouncing",
-  "urlPatterns": ["/assessments/assignments/"],
+  "description": "Use keyboard to navigate between performance questions",
+  "urlPatterns": ["/assessments/results/"],
   "defaultConfig": {
     "enabled": true,
-    "debounceDelay": 100,
     "leftKey": "ArrowLeft",
     "rightKey": "ArrowRight"
   },
@@ -12,12 +11,16 @@
     "showToggle": true,
     "fields": [
       {
-        "type": "number",
-        "id": "debounceDelay",
-        "label": "Debounce Delay (ms)",
-        "default": 100,
-        "min": 50,
-        "max": 500
+        "type": "key",
+        "id": "leftKey",
+        "label": "Previous Response Key",
+        "default": "ArrowLeft"
+      },
+      {
+        "type": "key",
+        "id": "rightKey",
+        "label": "Next Response Key",
+        "default": "ArrowRight"
       }
     ]
   }

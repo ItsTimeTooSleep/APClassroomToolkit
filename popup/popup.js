@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('saveBtn').addEventListener('click', saveSettings);
   document.getElementById('discardBtn').addEventListener('click', discardChanges);
   document.getElementById('backBtn').addEventListener('click', goToMainPage);
+  document.getElementById('aboutBtn').addEventListener('click', goToAboutPage);
+  document.getElementById('backFromAboutBtn').addEventListener('click', goToMainPageFromAbout);
   loadAllFeatures();
   setTimeout(setupChangeListener, 100);
   setTimeout(setupScrollListener, 150);

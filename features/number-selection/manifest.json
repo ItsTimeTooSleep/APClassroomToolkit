@@ -1,19 +1,47 @@
 {
   "name": "Number Selection",
-  "description": "Press number keys to select options quickly",
+  "description": "Press keyboard keys to select options quickly",
   "urlPatterns": ["/assessments/assignments/"],
   "defaultConfig": {
     "enabled": true,
-    "keys": ["1", "2", "3", "4", "5"]
+    "optionA": "1",
+    "optionB": "2",
+    "optionC": "3",
+    "optionD": "4",
+    "optionE": "5"
   },
   "uiConfig": {
     "showToggle": true,
     "fields": [
       {
-        "type": "text",
-        "id": "keys",
-        "label": "Selection Keys",
-        "default": "1, 2, 3, 4, 5"
+        "type": "key",
+        "id": "optionA",
+        "label": "Option A",
+        "default": "1"
+      },
+      {
+        "type": "key",
+        "id": "optionB",
+        "label": "Option B",
+        "default": "2"
+      },
+      {
+        "type": "key",
+        "id": "optionC",
+        "label": "Option C",
+        "default": "3"
+      },
+      {
+        "type": "key",
+        "id": "optionD",
+        "label": "Option D",
+        "default": "4"
+      },
+      {
+        "type": "key",
+        "id": "optionE",
+        "label": "Option E",
+        "default": "5"
       }
     ]
   }
