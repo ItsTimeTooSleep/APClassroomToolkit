@@ -44,5 +44,10 @@
         "default": "5"
       }
     ]
+  },
+  "behaviorConfig": {
+    "hotReloadOnConfigChange": false,
+    "reloadOnUrlChange": false,
+    "supportsDynamicToggle": true
   }
 }

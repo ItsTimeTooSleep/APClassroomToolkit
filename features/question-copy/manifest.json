@@ -1,6 +1,6 @@
 {
   "name": "Question Copy",
-  "description": "Click floating icon to copy question content to clipboard",
+  "description": "Copy entire question content to clipboard easily",
   "urlPatterns": ["/assessments/assignments/"],
   "defaultConfig": {
     "enabled": true,
@@ -35,5 +35,10 @@
         "default": true
       }
     ]
+  },
+  "behaviorConfig": {
+    "hotReloadOnConfigChange": false,
+    "reloadOnUrlChange": false,
+    "supportsDynamicToggle": true
   }
 }

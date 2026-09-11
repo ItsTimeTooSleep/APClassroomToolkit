@@ -20,6 +20,15 @@ function getDefaultSettings() {
   return settings;
 }
 
+function getBehaviorConfig(manifest) {
+  return {
+    hotReloadOnConfigChange: false,
+    reloadOnUrlChange: false,
+    supportsDynamicToggle: true,
+    ...manifest.behaviorConfig
+  };
+}
+
 function initializeModule(featureId, manifest, settings) {
   if (!settings.enabled) {
     console.log(`[AP Toolkit] Feature ${featureId} disabled`);
@@ -39,21 +48,6 @@ function initializeModule(featureId, manifest, settings) {
   const existingScript = document.getElementById(`__ap_toolkit_${featureId}`);
   if (existingScript) {
     existingScript.remove();
-  }
-  
-  if (featureId === 'question-copy') {
-    const oldIcon = document.getElementById('ap-toolkit-copy-icon');
-    if (oldIcon) {
-      oldIcon.remove();
-    }
-    const oldNotification = document.getElementById('ap-toolkit-notification');
-    if (oldNotification) {
-      oldNotification.remove();
-    }
-    const oldStyles = document.getElementById('ap-toolkit-notification-styles');
-    if (oldStyles) {
-      oldStyles.remove();
-    }
   }
   
   const script = document.createElement('script');
@@ -111,14 +105,15 @@ function handleUrlChange() {
   
   for (const featureId in FeatureManifests) {
     const manifest = FeatureManifests[featureId];
+    const behaviorConfig = getBehaviorConfig(manifest);
     const shouldBeActive = currentSettings[featureId]?.enabled && matchesUrl(manifest.urlPatterns);
     const isActive = injectedScripts[featureId] !== undefined;
     
     if (!shouldBeActive && isActive) {
       destroyModule(featureId);
     } else if (shouldBeActive) {
-      // 对 question-navigation 特殊处理：URL 变化时总是重新初始化
-      if (featureId === 'question-navigation') {
+      // 根据 behaviorConfig.reloadOnUrlChange 决定是否重新初始化
+      if (behaviorConfig.reloadOnUrlChange) {
         if (isActive) {
           destroyModule(featureId);
         }
@@ -161,25 +156,48 @@ async function loadAllFeatures() {
     chrome.storage.onChanged.addListener((changes, namespace) => {
       if (namespace !== 'sync') return;
       
-      for (const [featureId, { newValue }] of Object.entries(changes)) {
+      for (const [featureId, { newValue, oldValue }] of Object.entries(changes)) {
         if (!currentSettings) continue;
         currentSettings[featureId] = newValue;
         
-        const module = window[`APToolkit_${featureId}`];
-        if (module && typeof module.updateConfig === 'function') {
-          module.updateConfig(newValue);
-          console.log('[AP Toolkit] Module', featureId, 'updated with:', newValue);
-        }
-        
         if (!FeatureManifests[featureId]) continue;
         
-        const shouldBeActive = newValue?.enabled && matchesUrl(FeatureManifests[featureId].urlPatterns);
+        const manifest = FeatureManifests[featureId];
+        const behaviorConfig = getBehaviorConfig(manifest);
+        const shouldBeActive = newValue?.enabled && matchesUrl(manifest.urlPatterns);
         const isActive = injectedScripts[featureId] !== undefined;
         
-        if (!shouldBeActive && isActive) {
-          destroyModule(featureId);
-        } else if (shouldBeActive && !isActive) {
-          initializeModule(featureId, FeatureManifests[featureId], newValue);
+        // 检查是否只是 enabled 状态变化
+        const enabledChanged = oldValue?.enabled !== newValue?.enabled;
+        
+        // 检查是否配置发生了变化（除了 enabled）
+        const configChanged = !enabledChanged && JSON.stringify(oldValue) !== JSON.stringify(newValue);
+        
+        if (enabledChanged) {
+          // enabled 状态变化
+          if (!behaviorConfig.supportsDynamicToggle) {
+            console.log(`[AP Toolkit] Feature ${featureId} does not support dynamic toggle, skipping`);
+            continue;
+          }
+          
+          if (!shouldBeActive && isActive) {
+            destroyModule(featureId);
+          } else if (shouldBeActive && !isActive) {
+            initializeModule(featureId, manifest, newValue);
+          }
+        } else if (configChanged && isActive) {
+          // 配置变化，根据 hotReloadOnConfigChange 决定处理方式
+          if (behaviorConfig.hotReloadOnConfigChange) {
+            console.log(`[AP Toolkit] Hot reloading feature ${featureId} due to config change`);
+            destroyModule(featureId);
+            initializeModule(featureId, manifest, newValue);
+          } else {
+            const module = window[`APToolkit_${featureId}`];
+            if (module && typeof module.updateConfig === 'function') {
+              module.updateConfig(newValue);
+              console.log('[AP Toolkit] Module', featureId, 'updated with:', newValue);
+            }
+          }
         }
       }
     });

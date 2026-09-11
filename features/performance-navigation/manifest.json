@@ -1,6 +1,6 @@
 {
   "name": "Performance Navigation",
-  "description": "Use keyboard to navigate between performance questions",
+  "description": "Use keyboard keys to navigate between performance questions",
   "urlPatterns": ["/assessments/results/"],
   "defaultConfig": {
     "enabled": true,
@@ -23,5 +23,10 @@
         "default": "ArrowRight"
       }
     ]
+  },
+  "behaviorConfig": {
+    "hotReloadOnConfigChange": false,
+    "reloadOnUrlChange": true,
+    "supportsDynamicToggle": true
   }
 }

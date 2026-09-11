@@ -1,6 +1,6 @@
 {
   "name": "Question Navigation",
-  "description": "Use arrow keys to navigate between questions",
+  "description": "Use keyboard keys to navigate between questions",
   "urlPatterns": ["/assessments/assignments/"],
   "defaultConfig": {
     "enabled": true,
@@ -23,5 +23,10 @@
         "default": "ArrowRight"
       }
     ]
+  },
+  "behaviorConfig": {
+    "hotReloadOnConfigChange": false,
+    "reloadOnUrlChange": true,
+    "supportsDynamicToggle": true
   }
 }
